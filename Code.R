@@ -18,15 +18,13 @@ data1%>%
 
 glimpse(data2)
 
-unique(data2$boardgamedesigner)
 data2%>%
   distinct()%>%
-  select(name,year,rank,average, bayes_average,playingtime,minage,boardgameartist)->data
+  select(name,yearpublished,bayes_average,playingtime)->data
 
-
-ggplot(data,aes(x=playingtime,y=bayes_average,label=name,fill=as.factor(year)))+
+ggplot(data,aes(x=playingtime,y=bayes_average,label=name,fill=as.factor(yearpublished)))+
   geom_jitter(colour="white",pch=21,alpha=0.84,size=3)+
-  labs(fill="Year: ")+
+  labs(fill="Year Published: ")+
   geom_text_repel(colour="white",fontface="bold",size=3,hjust=-1.2,max.overlaps = 1)+
   theme(plot.background=element_rect(fill="black"),
         panel.background = element_rect(fill="black"),
@@ -48,11 +46,13 @@ ggplot(data,aes(x=playingtime,y=bayes_average,label=name,fill=as.factor(year)))+
         plot.caption=element_text(size=10,colour="white",hjust=0,margin=margin(t=20)))+
   labs(x="------PLAYING TIME IN MINUTES------",
        y="------AVERAGE BAYES RATING------",
-       title="WHAT BOARD GAMES DID PEOPLE PLAY THE MOST DURING COVID?",
-       subtitle=str_wrap("Around 1,575 board games were played in 2020 and 2021, and all of them except for 7 games were played for less than 24 hours. 
-                         While The Third Winter: The Battle for the Ukraine September 1943 - April 1944 was the most played board game, Gloomhaven: Jaws of the Lion was the highest rated.",100),
+       title="PEOPLE PREFERRED BOARD GAMES WITH SHORTER PLAY TIME DURING COVID",
+       subtitle=str_wrap("Around 1,575 board games were created in 2020 and 2021, and all of them except for 7 games can be played in less than 3 hours. 
+And it turns out that most of the games that can be finished quickly received a higher rating from users than the ones that took longer to complete.
+For instance, the rating averaged to 5.5 for The Third Winter: The Battle for the Ukraine September 1943 - April 1944 that takes a maximum of 167 days to complete.
+However, games such as Gloomhaven: Jaws of the Lion that can be completed in two hours maximum were among the highest rated.",100),
        caption = "Data via Tidy Tuesday| Analysis and design: @annapurani93")->plot
 
 
 
-ggsave("boardgames.png",plot,width = 12,height=8.4)
+ggsave("boardgames.png",plot,width = 12,height=9.3)
